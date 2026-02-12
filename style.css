@@ -1,0 +1,1020 @@
+/* ==================== GLOBAL STYLES ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --pink-primary: #FFB6C1;
+    --pink-light: #FFC0CB;
+    --pink-dark: #FF69B4;
+    --white: #FFFFFF;
+    --cream: #FFF5F7;
+    --text-dark: #4A4A4A;
+    --text-soft: #6B4E4E;
+    --shadow: rgba(255, 105, 180, 0.3);
+    --shadow-soft: rgba(255, 182, 193, 0.2);
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+    background: var(--cream);
+    color: var(--text-soft);
+    line-height: 1.6;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.section {
+    min-height: 100vh;
+    display: none;
+    position: relative;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 1;
+}
+
+.section.active {
+    display: flex;
+    opacity: 1;
+    animation: fadeIn 1s ease-in;
+    z-index: 2;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+::selection {
+    background: var(--pink-primary);
+    color: var(--white);
+}
+
+/* ==================== FLOATING HEARTS ANIMATION ==================== */
+@keyframes floatingHearts {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.7;
+    }
+    80% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ==================== SECTION 1: OPENING ==================== */
+#opening {
+    background: linear-gradient(135deg, var(--pink-light) 0%, var(--white) 100%);
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.hearts-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.hearts-background::before,
+.hearts-background::after {
+    content: '❤️';
+    position: absolute;
+    font-size: 30px;
+    color: var(--pink-primary);
+    opacity: 0.2;
+    animation: floatingHearts 10s infinite linear;
+}
+
+.hearts-background::before {
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.hearts-background::after {
+    left: 90%;
+    animation-delay: 5s;
+}
+
+.content-center {
+    text-align: center;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8rem;
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    padding: 2.5rem;
+    border-radius: 60px;
+    box-shadow: 0 20px 40px var(--shadow-soft);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* GIF Containers */
+.gif-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cute-gif {
+    max-width: 280px;
+    width: 100%;
+    height: auto;
+    border-radius: 30px;
+    box-shadow: 0 15px 35px var(--shadow);
+    animation: float 4s ease-in-out infinite;
+    border: 5px solid white;
+}
+
+.top-gif .cute-gif {
+    animation-delay: 0s;
+}
+
+.bottom-gif .cute-gif {
+    max-width: 180px;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.main-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    color: var(--pink-dark);
+    text-shadow: 3px 3px 0 rgba(255, 255, 255, 0.8);
+    animation: slideDown 1s ease-out;
+    margin: 0.5rem 0;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.button-container {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 1rem 3rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 8px 25px var(--shadow);
+    border: 3px solid white;
+    letter-spacing: 1px;
+    min-width: 140px;
+}
+
+.btn-yes {
+    background: linear-gradient(145deg, var(--pink-dark), #FF1493);
+    color: var(--white);
+    animation: wiggle 2.5s infinite;
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-3deg) scale(1.02); }
+    75% { transform: rotate(3deg) scale(1.02); }
+}
+
+.btn-yes:hover {
+    transform: scale(1.15);
+    background: #FF1493;
+    box-shadow: 0 15px 35px var(--shadow);
+}
+
+.btn-no {
+    background: var(--white);
+    color: var(--pink-dark);
+    border: 3px solid var(--pink-primary);
+    transition: all 0.3s ease;
+}
+
+.btn-no:hover {
+    background: var(--cream);
+    transform: scale(0.95);
+}
+
+.no-message {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem;
+    color: var(--pink-dark);
+    min-height: 50px;
+    animation: fadeIn 0.5s ease;
+    font-weight: 600;
+}
+
+/* ==================== SECTION 2: PAPER LETTER ==================== */
+#textScroll {
+    background: linear-gradient(145deg, var(--cream) 0%, var(--pink-light) 30%, var(--white) 100%);
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 2rem;
+}
+
+.paper-container {
+    max-width: 800px;
+    width: 90%;
+    background: var(--white);
+    padding: 3rem 3.5rem;
+    border-radius: 20px;
+    box-shadow: 0 30px 70px rgba(255, 105, 180, 0.15);
+    position: relative;
+    border: 2px solid rgba(255, 182, 193, 0.5);
+    transition: all 0.3s ease;
+}
+
+.paper-container:hover {
+    box-shadow: 0 40px 90px rgba(255, 105, 180, 0.2);
+}
+
+/* JUDUL SURAT ROMANTIS */
+.paper-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8rem;
+    color: var(--pink-dark);
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 3px 3px 6px var(--shadow-soft);
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.paper-title::before,
+.paper-title::after {
+    content: '💕';
+    position: absolute;
+    font-size: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.8;
+}
+
+.paper-title::before {
+    left: -50px;
+}
+
+.paper-title::after {
+    right: -50px;
+}
+
+.paper-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        var(--pink-light) 10%, 
+        var(--pink-light) 90%, 
+        transparent 100%);
+    opacity: 0.2;
+}
+
+.paper-content {
+    position: relative;
+    z-index: 2;
+}
+
+.typing-text {
+    font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+    font-size: 1.25rem;
+    line-height: 1.85;
+    color: #5D4E4E;
+    font-weight: 400;
+    text-align: left;
+    white-space: pre-wrap;
+    min-height: 350px;
+    letter-spacing: 0.3px;
+    font-style: normal;
+    padding: 0 0.5rem;
+}
+
+.typing-text::after {
+    content: '|';
+    animation: blink 0.9s infinite;
+    margin-left: 3px;
+    color: var(--pink-dark);
+    font-weight: 600;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* ==================== SECTION 3: POLAROID GALLERY 4x2 ==================== */
+#polaroid {
+    background: linear-gradient(145deg, #FFF0F5 0%, var(--pink-light) 30%, #FFF0F5 100%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+}
+
+.section-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: var(--pink-dark);
+    margin-bottom: 2.5rem;
+    text-shadow: 3px 3px 6px var(--shadow-soft);
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::before,
+.section-title::after {
+    content: '📸';
+    position: absolute;
+    font-size: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+}
+
+.section-title::before {
+    left: -60px;
+}
+
+.section-title::after {
+    right: -60px;
+}
+
+.polaroid-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 KOLOM - 2 BARIS */
+    gap: 2rem;
+    max-width: 1200px;
+    width: 100%;
+    padding: 1.5rem;
+    margin: 0 auto;
+}
+
+.polaroid {
+    background: white;
+    padding: 1.2rem 1.2rem 1.8rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transform: rotate(0deg);
+    transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
+    cursor: pointer;
+    opacity: 0;
+    animation: dropIn 0.7s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+    border: 2px solid white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes dropIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-150px) rotate(var(--rotation, -5deg)) scale(0.8);
+    }
+    70% {
+        transform: translateY(15px) rotate(var(--rotation, 2deg)) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotate(var(--rotation, 0deg)) scale(1);
+    }
+}
+
+/* Random rotation per polaroid */
+.polaroid:nth-child(1) { --rotation: -3deg; animation-delay: 0.1s; }
+.polaroid:nth-child(2) { --rotation: 2deg; animation-delay: 0.2s; }
+.polaroid:nth-child(3) { --rotation: -2deg; animation-delay: 0.3s; }
+.polaroid:nth-child(4) { --rotation: 4deg; animation-delay: 0.4s; }
+.polaroid:nth-child(5) { --rotation: -4deg; animation-delay: 0.5s; }
+.polaroid:nth-child(6) { --rotation: 3deg; animation-delay: 0.6s; }
+.polaroid:nth-child(7) { --rotation: -1deg; animation-delay: 0.7s; }
+.polaroid:nth-child(8) { --rotation: 2deg; animation-delay: 0.8s; }
+
+.polaroid:hover {
+    transform: scale(1.08) rotate(0deg) !important;
+    box-shadow: 0 25px 45px rgba(255, 105, 180, 0.3);
+    z-index: 20;
+    border-color: var(--pink-light);
+}
+
+.polaroid-img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    margin-bottom: 0.8rem;
+    border: 1px solid #FFE4E1;
+    border-radius: 4px;
+}
+
+.polaroid-caption {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    text-align: center;
+    padding: 0.5rem 0.2rem 0.2rem;
+    line-height: 1.4;
+    font-weight: 600;
+    border-top: 1.5px dashed var(--pink-primary);
+    margin-top: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+/* ==================== SECTION 4: LOVE LETTER ==================== */
+#loveLetter {
+    background: linear-gradient(145deg, var(--white) 0%, var(--cream) 100%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+}
+
+.letter-container {
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Narrative Intro */
+.narrative-intro {
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeInUp 1.2s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.narrative-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.2rem;
+    color: var(--pink-dark);
+    margin-bottom: 0.8rem;
+    text-shadow: 3px 3px 6px var(--shadow-soft);
+    font-weight: 700;
+}
+
+.narrative-subtext {
+    font-size: 1.5rem;
+    color: var(--text-soft);
+    font-weight: 300;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+/* Envelope Animation */
+.envelope-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    cursor: pointer;
+    margin: 3rem 0;
+}
+
+.envelope-container.active {
+    display: flex;
+    animation: fadeIn 1s ease;
+}
+
+.envelope {
+    position: relative;
+    width: 320px;
+    height: 220px;
+    transition: all 0.6s ease;
+}
+
+.envelope:hover {
+    transform: scale(1.05);
+}
+
+.envelope-body {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #FFF0F5, var(--white));
+    border: 4px solid var(--pink-primary);
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0 20px 40px var(--shadow);
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(145deg, var(--pink-light), #FFD9E6);
+    border: 4px solid var(--pink-primary);
+    border-radius: 15px 15px 0 0;
+    transform-origin: top;
+    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 2;
+}
+
+.envelope.open .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.heart-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3.5rem;
+    z-index: 3;
+    animation: heartPulse 1.8s infinite;
+    filter: drop-shadow(0 5px 10px rgba(255, 105, 180, 0.3));
+}
+
+@keyframes heartPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.15); }
+}
+
+.tap-hint {
+    font-size: 1.2rem;
+    color: var(--pink-dark);
+    font-weight: 600;
+    animation: bounce 2s infinite;
+    font-family: 'Dancing Script', cursive;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+/* Letter Content */
+.letter-content {
+    display: none;
+    margin: 2rem 0;
+}
+
+.letter-content.active {
+    display: block;
+    animation: fadeIn 1s ease;
+}
+
+.letter-paper {
+    background: white;
+    padding: 3.5rem 3rem;
+    border-radius: 25px;
+    box-shadow: 0 25px 60px rgba(255, 105, 180, 0.2);
+    border: 2px solid var(--pink-light);
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.letter-paper::before,
+.letter-paper::after {
+    content: '💕';
+    position: absolute;
+    font-size: 2.2rem;
+    opacity: 0.3;
+}
+
+.letter-paper::before {
+    top: 15px;
+    left: 15px;
+    transform: rotate(-15deg);
+}
+
+.letter-paper::after {
+    bottom: 15px;
+    right: 15px;
+    transform: rotate(15deg);
+}
+
+.letter-header {
+    margin-bottom: 2rem;
+    border-bottom: 2px dashed var(--pink-light);
+    padding-bottom: 1rem;
+}
+
+.letter-to {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: var(--pink-dark);
+    text-align: left;
+    font-weight: 600;
+}
+
+.letter-text {
+    font-family: 'Playfair Display', 'Georgia', serif;
+    font-size: 1.1rem;
+    line-height: 1.9;
+    text-align: left;
+    color: var(--text-soft);
+    margin-bottom: 2.5rem;
+    white-space: pre-wrap;
+    min-height: 350px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    padding: 0 0.5rem;
+}
+
+.letter-footer {
+    text-align: right;
+    margin-top: 2rem;
+    border-top: 2px dashed var(--pink-light);
+    padding-top: 1.5rem;
+}
+
+.letter-signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.4rem;
+    color: var(--text-soft);
+    margin-bottom: 0.3rem;
+}
+
+.letter-name {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: var(--pink-dark);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Letter Actions */
+.letter-actions {
+    display: none;
+    justify-content: center;
+    margin-top: 2.5rem;
+}
+
+.letter-actions.active {
+    display: flex;
+    animation: fadeIn 0.8s ease;
+}
+
+.btn-download {
+    background: linear-gradient(145deg, var(--pink-dark), #FF1493);
+    color: var(--white);
+    padding: 1.2rem 3.5rem;
+    font-size: 1.2rem;
+    border: 3px solid white;
+    box-shadow: 0 15px 35px var(--shadow);
+}
+
+.btn-download:hover {
+    background: #FF1493;
+    transform: scale(1.08);
+    box-shadow: 0 20px 45px var(--shadow);
+}
+
+/* ==================== SECTION 5: CLOSING 2026 ==================== */
+#closing {
+    background: linear-gradient(145deg, var(--pink-light) 0%, var(--white) 70%);
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.closing-content {
+    text-align: center;
+    max-width: 800px;
+    padding: 2rem;
+    animation: fadeInScale 1.2s ease;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.final-heart {
+    font-size: 90px;
+    animation: heartbeat 2s infinite;
+    margin-bottom: 1.8rem;
+    filter: drop-shadow(0 10px 20px rgba(255, 105, 180, 0.3));
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    10%, 30% { transform: scale(1.15); }
+    20%, 40% { transform: scale(1.25); }
+}
+
+.closing-quote {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.3rem;
+    color: var(--pink-dark);
+    margin-bottom: 2rem;
+    text-shadow: 3px 3px 8px var(--shadow-soft);
+    line-height: 1.5;
+    font-weight: 700;
+    padding: 0 1rem;
+}
+
+.closing-date {
+    font-size: 1.5rem;
+    color: var(--text-soft);
+    font-weight: 600;
+    margin-top: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    border-top: 2px solid var(--pink-light);
+    padding-top: 1.8rem;
+    display: inline-block;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media (max-width: 1100px) {
+    .polaroid-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .polaroid-img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 992px) {
+    .polaroid-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 700px;
+    }
+    
+    .paper-title {
+        font-size: 2.3rem;
+    }
+    
+    .paper-title::before,
+    .paper-title::after {
+        font-size: 1.5rem;
+    }
+    
+    .paper-title::before { left: -35px; }
+    .paper-title::after { right: -35px; }
+}
+
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+    
+    .cute-gif {
+        max-width: 220px;
+    }
+    
+    .top-gif .cute-gif {
+        max-width: 200px;
+    }
+    
+    .bottom-gif .cute-gif {
+        max-width: 140px;
+    }
+    
+    .button-container {
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+    
+    .btn {
+        padding: 0.9rem 2.2rem;
+        font-size: 1.1rem;
+        min-width: 120px;
+    }
+    
+    .paper-container {
+        padding: 2rem 1.8rem;
+    }
+    
+    .paper-title {
+        font-size: 2rem;
+    }
+    
+    .typing-text {
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+    }
+    
+    .polaroid-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .polaroid-img {
+        height: 180px;
+    }
+    
+    .polaroid-caption {
+        font-size: 0.95rem;
+    }
+    
+    .narrative-text {
+        font-size: 2.5rem;
+    }
+    
+    .envelope {
+        width: 260px;
+        height: 180px;
+    }
+    
+    .letter-paper {
+        padding: 2rem 1.5rem;
+    }
+    
+    .letter-text {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+    
+    .letter-name {
+        font-size: 1.6rem;
+    }
+    
+    .closing-quote {
+        font-size: 1.8rem;
+    }
+    
+    .final-heart {
+        font-size: 70px;
+    }
+}
+
+@media (max-width: 576px) {
+    .polaroid-grid {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+    }
+    
+    .polaroid-img {
+        height: 250px;
+    }
+    
+    .paper-title::before,
+    .paper-title::after {
+        display: none;
+    }
+    
+    .section-title::before,
+    .section-title::after {
+        display: none;
+    }
+    
+    .closing-quote {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-center {
+        padding: 1.5rem;
+    }
+    
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .cute-gif {
+        max-width: 180px;
+    }
+    
+    .top-gif .cute-gif {
+        max-width: 160px;
+    }
+    
+    .bottom-gif .cute-gif {
+        max-width: 120px;
+    }
+    
+    .paper-container {
+        padding: 1.8rem 1.2rem;
+    }
+    
+    .typing-text {
+        font-size: 1rem;
+    }
+    
+    .letter-paper {
+        padding: 1.5rem 1.2rem;
+    }
+    
+    .letter-to {
+        font-size: 1.6rem;
+    }
+    
+    .letter-text {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+    
+    .closing-quote {
+        font-size: 1.3rem;
+    }
+    
+    .closing-date {
+        font-size: 1.1rem;
+    }
+}
+
+/* ==================== PRINT STYLE UNTUK PDF ==================== */
+@media print {
+    body {
+        background: white;
+        padding: 0.5in;
+    }
+    
+    .section:not(#loveLetter) {
+        display: none !important;
+    }
+    
+    #loveLetter {
+        display: block !important;
+        background: white;
+        padding: 0;
+        min-height: auto;
+    }
+    
+    .narrative-intro,
+    .envelope-container,
+    .btn-download,
+    .letter-actions {
+        display: none !important;
+    }
+    
+    .letter-content {
+        display: block !important;
+    }
+    
+    .letter-paper {
+        box-shadow: none;
+        border: 2px solid #FFB6C1;
+        padding: 1.5rem;
+    }
+    
+    @page {
+        size: auto;
+        margin: 0.75in;
+    }
+}
