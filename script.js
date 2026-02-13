@@ -1,15 +1,10 @@
 // ==================== GLOBAL VARIABLES ====================
 let currentSection = 0;
 let noClickCount = 0;
-let isTransitioning = false;
-let isEnvelopeOpened = false;
-let polaroidTimer;
-let letterTimer;
-let heartInterval;
 
 const sections = ['opening', 'textScroll', 'polaroid', 'loveLetter', 'closing'];
 
-// ==================== POLAROID DATA - CAPTION SESUAI PERMINTAAN ====================
+// ==================== POLAROID DATA - UPDATED CAPTIONS ====================
 const polaroidData = [
     { img: 'assets/photo1.jpeg', caption: 'Our first moment together' },
     { img: 'assets/photo2.jpeg', caption: 'A moment at the beach during Dian\'s KKM' },
@@ -65,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initOpeningSection();
     generatePolaroids();
     initLoveLetterSection();
-    startFloatingHearts(); // Floating hearts lebih sering
 });
 
 // ==================== MUSIC AUTOPLAY ====================
@@ -82,42 +76,6 @@ function initMusic() {
             }, { once: true });
         });
     }, 500);
-}
-
-// ==================== FLOATING HEARTS - LEBIH SERING (SETIAP 1 DETIK) ====================
-function startFloatingHearts() {
-    // Clear interval sebelumnya jika ada
-    if (heartInterval) clearInterval(heartInterval);
-    
-    heartInterval = setInterval(() => {
-        // Hanya muncul di section opening
-        if (currentSection === 0) {
-            const container = document.querySelector('.hearts-background');
-            if (container) {
-                for (let i = 0; i < 3; i++) { // 3 hearts setiap kali
-                    createHeart(container);
-                }
-            }
-        }
-    }, 1000); // SETIAP 1 DETIK - LEBIH SERING
-}
-
-function createHeart(container) {
-    const heart = document.createElement('div');
-    const hearts = ['💕', '💖', '💗', '💓', '❤️', '💝'];
-    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-    heart.style.position = 'absolute';
-    heart.style.left = Math.random() * 100 + '%';
-    heart.style.fontSize = (20 + Math.random() * 30) + 'px';
-    heart.style.animation = 'floatingHearts ' + (8 + Math.random() * 6) + 's linear';
-    heart.style.opacity = '0.5';
-    heart.style.bottom = '0';
-    heart.style.pointerEvents = 'none';
-    heart.style.zIndex = '1';
-    
-    container.appendChild(heart);
-    
-    setTimeout(() => heart.remove(), 14000);
 }
 
 // ==================== SECTION 1: OPENING ====================
@@ -181,15 +139,13 @@ function initOpeningSection() {
 }
 
 function celebrateYes() {
-    if (isTransitioning) return;
-    isTransitioning = true;
-    
+    // Create heart explosion effect
     createHeartExplosion();
     
+    // Transition to next section after celebration
     setTimeout(() => {
         goToNextSection();
         startTypingAnimation();
-        isTransitioning = false;
     }, 2000);
 }
 
@@ -197,18 +153,18 @@ function createHeartExplosion() {
     const hearts = ['💕', '💖', '💗', '💓', '💝', '❤️'];
     const container = document.getElementById('opening');
     
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 40; i++) {
         const heart = document.createElement('div');
         heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
         heart.style.position = 'absolute';
-        heart.style.fontSize = (20 + Math.random() * 25) + 'px';
+        heart.style.fontSize = (20 + Math.random() * 20) + 'px';
         heart.style.left = '50%';
         heart.style.top = '50%';
         heart.style.pointerEvents = 'none';
         heart.style.zIndex = '1000';
         
-        const angle = (Math.PI * 2 * i) / 50;
-        const velocity = 150 + Math.random() * 300;
+        const angle = (Math.PI * 2 * i) / 40;
+        const velocity = 150 + Math.random() * 250;
         const tx = Math.cos(angle) * velocity;
         const ty = Math.sin(angle) * velocity;
         
@@ -243,17 +199,14 @@ function createHeartExplosion() {
 
 // ==================== SECTION NAVIGATION ====================
 function goToNextSection() {
-    if (currentSection < sections.length - 1) {
-        const currentSectionElement = document.getElementById(sections[currentSection]);
-        currentSectionElement.classList.remove('active');
-        
-        currentSection++;
-        
+    const currentSectionElement = document.getElementById(sections[currentSection]);
+    currentSectionElement.classList.remove('active');
+    
+    currentSection++;
+    
+    if (currentSection < sections.length) {
         const nextSectionElement = document.getElementById(sections[currentSection]);
         nextSectionElement.classList.add('active');
-        
-        // Scroll ke atas
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -268,7 +221,7 @@ async function startTypingAnimation() {
     // Remove cursor after typing is done
     setTimeout(() => {
         typingTextElement.style.removeProperty('--cursor');
-        // Move to next section after 2 seconds
+        // Move to next section
         setTimeout(() => {
             goToNextSection();
         }, 2000);
@@ -290,46 +243,29 @@ function sleep(ms) {
 function generatePolaroids() {
     const grid = document.querySelector('.polaroid-grid');
     
-    // Cek duplikasi - jangan generate ulang
-    if (grid.children.length > 0) {
-        return;
-    }
-    
     polaroidData.forEach((data, index) => {
         const polaroid = document.createElement('div');
         polaroid.className = 'polaroid';
         
-        // Set random rotation via CSS variable
-        const rotations = [-3, 2, -2, 4, -4, 3, -1, 2];
-        polaroid.style.setProperty('--rotation', rotations[index] + 'deg');
-        polaroid.style.animationDelay = (index * 0.1) + 's';
-        
         polaroid.innerHTML = `
-            <img src="${data.img}" 
-                 alt="Memory ${index + 1}" 
-                 class="polaroid-img"
-                 onerror="this.src='https://via.placeholder.com/300x300?text=❤️+${index+1}'">
+            <img src="${data.img}" alt="Memory ${index + 1}" class="polaroid-img">
             <p class="polaroid-caption">${data.caption}</p>
         `;
         
         // Add click animation
-        polaroid.addEventListener('click', function() {
-            this.style.transform = 'scale(1.15) rotate(0deg)';
-            this.style.zIndex = '20';
+        polaroid.addEventListener('click', () => {
+            const currentTransform = polaroid.style.transform;
+            polaroid.style.transform = 'scale(1.15) rotate(0deg)';
             setTimeout(() => {
-                this.style.transform = `scale(1) rotate(${rotations[index]}deg)`;
-                this.style.zIndex = '1';
+                polaroid.style.transform = currentTransform;
             }, 400);
         });
         
         grid.appendChild(polaroid);
     });
     
-    // Clear timer sebelumnya
-    clearTimeout(polaroidTimer);
-    
-    // Auto-advance after 2 minutes (120 seconds)
-    polaroidTimer = setTimeout(() => {
+    // Auto-advance after 2 minutes 
+    setTimeout(() => {
         if (currentSection === 2) {
             goToNextSection();
             startLoveLetterSequence();
@@ -340,6 +276,7 @@ function generatePolaroids() {
 // ==================== SECTION 4: LOVE LETTER ====================
 function initLoveLetterSection() {
     const envelopeContainer = document.getElementById('envelopeContainer');
+    const envelope = document.querySelector('.envelope');
     
     envelopeContainer.addEventListener('click', () => {
         openEnvelope();
@@ -347,17 +284,14 @@ function initLoveLetterSection() {
 }
 
 function startLoveLetterSequence() {
-    // Show envelope after 2 seconds
+    // Show envelope after 3 seconds
     setTimeout(() => {
         const envelopeContainer = document.getElementById('envelopeContainer');
         envelopeContainer.classList.add('active');
-    }, 2000);
+    }, 3000);
 }
 
 function openEnvelope() {
-    if (isEnvelopeOpened) return;
-    isEnvelopeOpened = true;
-    
     const envelope = document.querySelector('.envelope');
     const envelopeContainer = document.getElementById('envelopeContainer');
     const narrativeIntro = document.getElementById('narrativeIntro');
@@ -389,6 +323,13 @@ async function showLoveLetter() {
     // Show PDF download button after typing is done
     setTimeout(() => {
         letterActions.classList.add('active');
+        
+        // Auto-advance to closing after 30 seconds (optional fallback)
+        setTimeout(() => {
+            if (currentSection === 3) {
+                goToNextSection();
+            }
+        }, 30000);
     }, 1000);
 }
 
@@ -404,26 +345,24 @@ function generatePDF() {
     const margin = 20;
     
     // ===== DECORATIVE BORDER =====
-    doc.setDrawColor(255, 182, 193);
+    // Outer border
+    doc.setDrawColor(255, 182, 193); // Pink
     doc.setLineWidth(2);
     doc.rect(10, 10, pageWidth - 20, pageHeight - 20, 'S');
     
+    // Inner border
     doc.setLineWidth(0.5);
     doc.rect(15, 15, pageWidth - 30, pageHeight - 30, 'S');
     
-    // ===== CORNER DECORATIONS =====
-    doc.setFontSize(24);
+    // ===== CORNER DECORATIONS (FIXED - NO EMOJI) =====
+    doc.setFontSize(16);
     doc.setTextColor(255, 105, 180);
-    doc.text('💕', 12, 18);
-    doc.text('💕', pageWidth - 22, 18);
-    doc.text('💕', 12, pageHeight - 12);
-    doc.text('💕', pageWidth - 22, pageHeight - 12);
     
     // ===== HEADER =====
     doc.setFontSize(28);
     doc.setFont('times', 'bold');
     doc.setTextColor(255, 105, 180);
-    doc.text('Surat Cinta Untukmu', pageWidth / 2, 35, { align: 'center' });
+    doc.text('Surat Cinta Untuk Dian', pageWidth / 2, 35, { align: 'center' });
     
     // ===== DATE =====
     doc.setFontSize(11);
@@ -451,7 +390,8 @@ function generatePDF() {
     let yPosition = 70;
     const lineHeight = 7;
     
-    lines.forEach((line) => {
+    lines.forEach((line, index) => {
+       
         if (yPosition > pageHeight - 60) {
             doc.addPage();
             yPosition = margin;
@@ -469,12 +409,13 @@ function generatePDF() {
     });
     
     // ===== LETTER FOOTER =====
-    yPosition += 15;
+    yPosition += 10;
     
     if (yPosition > pageHeight - 50) {
         doc.addPage();
         yPosition = margin;
         
+        // Border for new page
         doc.setDrawColor(255, 182, 193);
         doc.setLineWidth(2);
         doc.rect(10, 10, pageWidth - 20, pageHeight - 20, 'S');
@@ -492,86 +433,45 @@ function generatePDF() {
     doc.setTextColor(255, 105, 180);
     doc.text('Lazuardi Azka R.', pageWidth - margin, yPosition, { align: 'right' });
     
-    // ===== FOOTER DECORATION =====
-    doc.setFontSize(20);
+    // ===== FOOTER DECORATION (FIXED - NO EMOJI) =====
+    doc.setFontSize(14);
     doc.setTextColor(255, 105, 180);
-    doc.text('❤️  💕  ❤️', pageWidth / 2, pageHeight - 20, { align: 'center' });
+    doc.text(' With Love ', pageWidth / 2, pageHeight - 20, { align: 'center' });
     
     // ===== SAVE PDF =====
     doc.save('Surat_Cinta_Valentine_2026.pdf');
     
-    // ===== DELAY 5 DETIK LALU PINDAH KE CLOSING =====
     setTimeout(() => {
         if (currentSection === 3) {
             goToNextSection();
         }
-    }, 5000); // 5 DETIK SESUAI PERMINTAAN
+    }, 5000); // 5 seconds
 }
 
-// ==================== RESET FUNCTION (UNTUK TESTING) ====================
-window.resetToStart = function() {
-    // Reset section
-    currentSection = 0;
-    noClickCount = 0;
-    isTransitioning = false;
-    isEnvelopeOpened = false;
-    
-    // Clear timers
-    clearTimeout(polaroidTimer);
-    clearTimeout(letterTimer);
-    
-    // Hide all sections, show opening
-    sections.forEach((id, index) => {
-        const section = document.getElementById(id);
-        if (index === 0) {
-            section.classList.add('active');
-        } else {
-            section.classList.remove('active');
+// ==================== FLOATING HEARTS (MORE FREQUENT) ====================
+setInterval(() => {
+    if (currentSection === 0) {
+        const container = document.querySelector('.hearts-background');
+        if (container) {
+            const heart = document.createElement('div');
+            const hearts = ['💕', '💖', '💗', '💓'];
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.position = 'absolute';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.fontSize = (25 + Math.random() * 25) + 'px';
+            heart.style.animation = 'floatingHearts 12s linear';
+            heart.style.opacity = '0.4';
+            heart.style.bottom = '0';
+            heart.style.pointerEvents = 'none';
+            
+            container.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 12000);
         }
-    });
-    
-    // Reset tombol NO
-    const noBtn = document.getElementById('noBtn');
-    const yesBtn = document.getElementById('yesBtn');
-    const noMessage = document.getElementById('noMessage');
-    
-    noBtn.textContent = 'No';
-    noBtn.style.transform = 'scale(1)';
-    noBtn.style.left = '0';
-    noBtn.style.top = '0';
-    noBtn.style.position = 'static';
-    noBtn.style.fontSize = '';
-    noBtn.style.padding = '';
-    
-    yesBtn.style.transform = 'scale(1)';
-    yesBtn.style.fontSize = '';
-    yesBtn.style.padding = '';
-    noMessage.textContent = '';
-    
-    // Reset envelope
-    const envelope = document.querySelector('.envelope');
-    const envelopeContainer = document.getElementById('envelopeContainer');
-    const narrativeIntro = document.getElementById('narrativeIntro');
-    const letterContent = document.getElementById('letterContent');
-    const letterActions = document.getElementById('letterActions');
-    
-    if (envelope) envelope.classList.remove('open');
-    if (envelopeContainer) {
-        envelopeContainer.style.display = 'none';
-        envelopeContainer.classList.remove('active');
     }
-    if (narrativeIntro) narrativeIntro.style.display = 'block';
-    if (letterContent) letterContent.classList.remove('active');
-    if (letterActions) letterActions.classList.remove('active');
-    
-    // Reset typing text
-    const typingText = document.getElementById('typingText');
-    if (typingText) typingText.textContent = '';
-    
-    console.log('✨ Reset to start! ✨');
-};
+}, 1500); 
 
 // ==================== CONSOLE MESSAGE ====================
-console.log('💕 Valentine Website 2026 Loaded Successfully! 💕');
-console.log('Made with love by Lazuardi Azka R. for the most special person! ❤️');
-console.log('Happy Valentine\'s Day 2026! 🌹✨');
+console.log('💕 Valentine Website Loaded Successfully! 💕');
+console.log('Made with love for the most special person in the world! ❤️');
+console.log('Happy Valentine\'s Day 2026! 🌹');
